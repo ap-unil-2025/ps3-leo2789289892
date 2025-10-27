@@ -32,6 +32,14 @@ def count_words(filename):
     """
     # TODO: Open file and count words
     # Hint: Use split() to separate words
+    try:
+        with open(filename, 'r') as f:
+            text = f.read()
+        words = text.split()  # Split by whitespace
+        return len(words)
+    except FileNotFoundError:
+        print(f"File {filename} not found.")
+        return 0
     pass
 
 
@@ -46,6 +54,13 @@ def count_lines(filename):
         int: Total number of lines
     """
     # TODO: Open file and count lines
+    try:
+        with open(filename, 'r') as f:
+            lines = f.readlines()  # Read all lines into a list
+        return len(lines)
+    except FileNotFoundError:
+        print(f"File {filename} not found.")
+        return 0
     pass
 
 
@@ -62,9 +77,18 @@ def count_characters(filename, include_spaces=True):
     """
     # TODO: Open file and count characters
     # If include_spaces is False, don't count spaces
+    try:
+        with open(filename, 'r') as f:
+            text = f.read()
+        if not include_spaces:
+            text = text.replace(" ", "")  # Remove spaces
+        return len(text)
+    except FileNotFoundError:
+        print(f"File {filename} not found.")
+        return 0
     pass
 
-
+import string
 def find_longest_word(filename):
     """
     Find and return the longest word in the file.
@@ -77,6 +101,21 @@ def find_longest_word(filename):
     """
     # TODO: Find the longest word
     # Hint: You might need to remove punctuation
+    try:
+        with open(filename, 'r') as f:
+            text = f.read()
+        # Remove punctuation
+        for punct in string.punctuation:
+            text = text.replace(punct, "")
+        words = text.split()
+        if not words:
+            return ""
+        # Find the longest word
+        longest_word = max(words, key=len)
+        return longest_word
+    except FileNotFoundError:
+        print(f"File {filename} not found.")
+        return ""
     pass
 
 
@@ -100,8 +139,20 @@ def word_frequency(filename):
     # TODO: Convert to lowercase
     # TODO: Remove punctuation (use string.punctuation)
     # TODO: Count frequency of each word
-
-    return frequency
+    try:
+        with open(filename, 'r') as f:
+            text = f.read()
+        text = text.lower()
+        for punct in string.punctuation:
+            text = text.replace(punct, "")
+        words = text.split()
+        for word in words:
+            frequency[word] = frequency.get(word, 0) + 1
+        return frequency
+    except FileNotFoundError:
+        print(f"File {filename} not found.")
+        return {}
+    pass
 
 
 def analyze_file(filename):
@@ -135,6 +186,7 @@ def analyze_file(filename):
         print(f"Error: File '{filename}' not found!")
     except Exception as e:
         print(f"Error: {e}")
+    pass
 
 
 def main():
@@ -150,7 +202,9 @@ def main():
     user_file = input("Enter a filename to analyze (or press Enter to skip): ").strip()
     if user_file:
         analyze_file(user_file)
+    pass
 
 
 if __name__ == "__main__":
     main()
+    pass
